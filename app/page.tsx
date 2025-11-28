@@ -45,7 +45,7 @@ export default function Home() {
             Estilo único, auténtico y con identidad paisa.
           </p>
           <Link href="/products">
-            <button className="mt-2 px-8 py-3 bg-red-600 hover:bg-red-700 rounded-lg font-semibold transition">
+            <button className="mt-2 px-8 py-3 bg-red-600 hover:bg-red-700 rounded-lg font-semibold transition cursor-pointer">
               Explorar colección
             </button>
           </Link>
@@ -72,7 +72,7 @@ export default function Home() {
           {products.map((item) => (
             <div
               key={item.id}
-              className="bg-zinc-900 rounded-xl overflow-hidden border border-zinc-800 hover:scale-105 transform transition"
+              className="bg-zinc-900 rounded-xl overflow-hidden border border-zinc-800 hover:scale-105 transform transition cursor-pointer"
             >
               <img
                 src={item.img}
@@ -82,7 +82,7 @@ export default function Home() {
               <div className="p-4">
                 <h3 className="font-semibold">{item.name}</h3>
                 <p className="text-gray-400">{item.category}</p>
-                <button className="mt-4 w-full bg-red-600 py-2 rounded hover:bg-red-700 transition">
+                <button className="mt-4 w-full bg-red-600 py-2 rounded hover:bg-red-700 transition cursor-pointer">
                   Ver producto
                 </button>
               </div>
@@ -92,7 +92,6 @@ export default function Home() {
       </section>
 
       {/* PROMOCIÓN DESTACADA */}
-
       <section className="relative my-14">
         <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center rounded-xl">
           <h2 className="text-3xl font-bold text-red-600 mb-2">
@@ -102,21 +101,20 @@ export default function Home() {
             Colores vibrantes y diseños urbanos
           </p>
           <Link href="/products">
-            <button className="px-6 py-2 bg-red-600 hover:bg-red-700 rounded-lg font-semibold transition">
+            <button className="px-6 py-2 bg-red-600 hover:bg-red-700 rounded-lg font-semibold transition cursor-pointer">
               Descúbrela
             </button>
           </Link>
         </div>
       </section>
 
-      {/* CATEGORÍAS CON IMÁGENES */}
+      {/* CATEGORÍAS */}
       <section className="max-w-6xl mx-auto px-6 py-16">
         <h2 className="text-3xl font-bold mb-10 text-center text-red-600">
           Categorías
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* Hombres */}
           <Link href="/products?cat=hombre">
             <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden hover:scale-105 transition cursor-pointer">
               <img
@@ -129,7 +127,6 @@ export default function Home() {
             </div>
           </Link>
 
-          {/* Mujeres */}
           <Link href="/products?cat=mujer">
             <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden hover:scale-105 transition cursor-pointer">
               <img
@@ -142,7 +139,6 @@ export default function Home() {
             </div>
           </Link>
 
-          {/* Unisex */}
           <Link href="/products?cat=unisex">
             <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden hover:scale-105 transition cursor-pointer">
               <img
@@ -155,7 +151,6 @@ export default function Home() {
             </div>
           </Link>
 
-          {/* Accesorios */}
           <Link href="/products?cat=accesorios">
             <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden hover:scale-105 transition cursor-pointer">
               <img
@@ -182,6 +177,7 @@ export default function Home() {
             </p>
             <h4 className="mt-4 font-bold text-red-600">– Laura</h4>
           </div>
+
           <div className="bg-black border border-zinc-800 p-6 rounded-xl">
             <p className="italic">
               "La ropa más cómoda y con mejor diseño urbano que he comprado."
@@ -196,6 +192,7 @@ export default function Home() {
         <h2 className="text-3xl font-bold text-red-600 mb-8 text-center">
           Novedades
         </h2>
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {["Tendencias 2025", "Streetwear en Medellín", "Accesorios urbanos"].map(
             (news, i) => (

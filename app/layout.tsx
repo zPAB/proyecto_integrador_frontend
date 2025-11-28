@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import LayoutWrapper from "@/components/layout/LayoutWrapper";
+import { AuthProvider } from "@/contexts/AuthContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,7 +35,11 @@ export default function RootLayout({
           min-h-screen
         `}
       >
-        <LayoutWrapper>{children}</LayoutWrapper>
+        {/* 🔥 Ahora TODO tu proyecto puede leer la sesión */}
+        <AuthProvider>
+          {/* Tu layout original se mantiene tal cual */}
+          <LayoutWrapper>{children}</LayoutWrapper>
+        </AuthProvider>
       </body>
     </html>
   );
