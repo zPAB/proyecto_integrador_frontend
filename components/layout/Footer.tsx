@@ -62,7 +62,7 @@ export default function Footer() {
 
       {/* Línea final */}
       <div className="border-t border-gray-700 mt-8 pt-4 text-center text-gray-400 text-sm">
-        © {new Date().getFullYear()} TuMarca — Hecho en Medellín 🇨🇴
+        © {new Date().getFullYear()} MedalloWear — Hecho en Medellín 🇨🇴
       </div>
     </footer>
   );

@@ -9,21 +9,21 @@ export default function Home() {
   const products = [
     {
       id: 1,
-      name: "Camiseta edición Medellín",
+      name: "Camiseta",
       category: "Colección urbana",
-      img: "https://images.unsplash.com/photo-1543076447-215ad9ba6923",
+      img: "https://dynamobrand.co/cdn/shop/files/CamisetaRegularWarriorBorn3_785x.jpg?v=1758130873",
     },
     {
       id: 2,
       name: "Chaqueta streetwear negra",
       category: "Colección urbana",
-      img: "https://images.unsplash.com/photo-1618354696220-bddc944eede0",
+      img: "https://image.made-in-china.com/202f0j00gbhlRneBZSUL/Varsity-Jacket-Men-Casual-Black-Bomber-Jacket-Loose-Baseball-Coat.webp",
     },
     {
       id: 3,
       name: "Pantalón denim clásico",
       category: "Colección urbana",
-      img: "https://images.unsplash.com/photo-1600180758895-6347f5426f5b",
+      img: "https://thunderjeans.co/cdn/shop/products/101898-0-web.webp?v=1710348544",
     },
   ];
 
@@ -93,11 +93,6 @@ export default function Home() {
 
       {/* PROMOCIÓN DESTACADA */}
       <section className="relative my-14">
-        <img
-          src="https://images.unsplash.com/photo-1593032465173-bd7a2e88bcd2"
-          alt="Promoción"
-          className="w-full h-64 object-cover rounded-xl"
-        />
         <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center rounded-xl">
           <h2 className="text-3xl font-bold text-red-600 mb-2">
             Nueva Colección Primavera
@@ -113,18 +108,64 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CATEGORÍAS */}
-      <section className="max-w-5xl mx-auto px-6 py-16">
-        <h2 className="text-2xl font-bold mb-8 text-center">Categorías</h2>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          {["Hombre", "Mujer", "Unisex", "Accesorios"].map((cat) => (
-            <div
-              key={cat}
-              className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 text-center hover:bg-zinc-800 transition"
-            >
-              <h3 className="font-bold text-red-600 text-xl">{cat}</h3>
+      {/* CATEGORÍAS CON IMÁGENES */}
+      <section className="max-w-6xl mx-auto px-6 py-16">
+        <h2 className="text-3xl font-bold mb-10 text-center text-red-600">
+          Categorías
+        </h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          {/* Hombres */}
+          <Link href="/products?cat=hombre">
+            <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden hover:scale-105 transition cursor-pointer">
+              <img
+                src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab"
+                className="h-48 w-full object-cover"
+              />
+              <div className="p-4 text-center">
+                <h3 className="font-bold text-red-600 text-xl">Hombre</h3>
+              </div>
             </div>
-          ))}
+          </Link>
+
+          {/* Mujeres */}
+          <Link href="/products?cat=mujer">
+            <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden hover:scale-105 transition cursor-pointer">
+              <img
+                src="https://images.pexels.com/photos/34447154/pexels-photo-34447154.jpeg"
+                className="h-48 w-full object-cover"
+              />
+              <div className="p-4 text-center">
+                <h3 className="font-bold text-red-600 text-xl">Mujer</h3>
+              </div>
+            </div>
+          </Link>
+
+          {/* Unisex */}
+          <Link href="/products?cat=unisex">
+            <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden hover:scale-105 transition cursor-pointer">
+              <img
+                src="https://images.pexels.com/photos/6786902/pexels-photo-6786902.jpeg"
+                className="h-48 w-full object-cover"
+              />
+              <div className="p-4 text-center">
+                <h3 className="font-bold text-red-600 text-xl">Unisex</h3>
+              </div>
+            </div>
+          </Link>
+
+          {/* Accesorios */}
+          <Link href="/products?cat=accesorios">
+            <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden hover:scale-105 transition cursor-pointer">
+              <img
+                src="https://images.pexels.com/photos/704241/pexels-photo-704241.jpeg"
+                className="h-48 w-full object-cover"
+              />
+              <div className="p-4 text-center">
+                <h3 className="font-bold text-red-600 text-xl">Accesorios</h3>
+              </div>
+            </div>
+          </Link>
         </div>
       </section>
 
@@ -149,7 +190,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* NUEVAS NOTICIAS / BLOG */}
+      {/* NOTICIAS */}
       <section className="max-w-6xl mx-auto px-6 py-14">
         <h2 className="text-3xl font-bold text-red-600 mb-8 text-center">
           Novedades
