@@ -92,13 +92,13 @@ export default function Home() {
       </section>
 
       {/* PROMOCIÓN DESTACADA */}
-      <section className="relative my-14">
+      <section className="relative my-14 px-6">
         <img
           src="https://images.unsplash.com/photo-1593032465173-bd7a2e88bcd2"
           alt="Promoción"
           className="w-full h-64 object-cover rounded-xl"
         />
-        <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center rounded-xl">
+        <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center rounded-xl mx-6">
           <h2 className="text-3xl font-bold text-red-600 mb-2">
             Nueva Colección Primavera
           </h2>
@@ -136,13 +136,13 @@ export default function Home() {
         <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-8">
           <div className="bg-black border border-zinc-800 p-6 rounded-xl">
             <p className="italic">
-              “Excelente calidad y estilo. Perfecto para el flow paisa.”
+              "Excelente calidad y estilo. Perfecto para el flow paisa."
             </p>
             <h4 className="mt-4 font-bold text-red-600">– Laura</h4>
           </div>
           <div className="bg-black border border-zinc-800 p-6 rounded-xl">
             <p className="italic">
-              “La ropa más cómoda y con mejor diseño urbano que he comprado.”
+              "La ropa más cómoda y con mejor diseño urbano que he comprado."
             </p>
             <h4 className="mt-4 font-bold text-red-600">– Mateo</h4>
           </div>
