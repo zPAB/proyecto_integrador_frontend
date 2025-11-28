@@ -6,8 +6,7 @@ export default function ProductsPage() {
   const categories = ["Todo", "Hombre", "Mujer", "Unisex", "Accesorios"];
 
   const colors = [
-    "Negro","Blanco","Rojo","Azul","Amarillo","Verde","Rosa","Gris","Café",
-    "Beige","Naranja","Morado","Violeta","Turquesa"
+    "Negro","Blanco","Rojo","Azul","Gris","Café","Beige"
   ];
 
   const tipos = ["Camisetas", "Pantalones", "Chaquetas", "Tops", "Accesorios"];
@@ -25,7 +24,7 @@ export default function ProductsPage() {
       id: 1,
       name: "Camiseta Oversize Negra",
       category: "Hombre",
-      img: "https://images.unsplash.com/photo-1543076447-215ad9ba6923",
+      img: "https://oaxis-cloud.s3.us-east-2.amazonaws.com/images/2024/06/07/kOKlEDbTFUd6Q1paNs38.jpg",
       price: 99900,
       color: "Negro",
       tipo: "Camisetas",
@@ -34,16 +33,16 @@ export default function ProductsPage() {
       id: 2,
       name: "Chaqueta Urbana Deportiva",
       category: "Unisex",
-      img: "https://images.unsplash.com/photo-1618354696220-bddc944eede0",
+      img: "https://m.media-amazon.com/images/I/61kvAb6xhZL.jpg",
       price: 179900,
-      color: "Rojo",
+      color: ["morado","beige"],
       tipo: "Chaquetas",
     },
     {
       id: 3,
       name: "Pantalón Cargo Street",
       category: "Hombre",
-      img: "https://images.unsplash.com/photo-1600180758895-6347f5426f5b",
+      img: "https://trueshop.co/cdn/shop/files/Cargo_Multi_Pocket_Pants_Washed_Black_1_1500x.jpg?v=1738204246",
       price: 139900,
       color: "Gris",
       tipo: "Pantalones",
@@ -52,7 +51,7 @@ export default function ProductsPage() {
       id: 4,
       name: "Top Deportivo Medellín",
       category: "Mujer",
-      img: "https://images.unsplash.com/photo-1593032465173-bd7a2e88bcd2",
+      img: "https://www.patprimo.com/dw/image/v2/BHFM_PRD/on/demandware.static/-/Sites-storefront_catalog_pat/default/dwfd154b0e/images/hi-res/2022-2023/camisetas-para-mujer-30220072-10_1.jpg?sw=800&sh=960",
       price: 79900,
       color: "Blanco",
       tipo: "Tops",
@@ -61,7 +60,7 @@ export default function ProductsPage() {
       id: 5,
       name: "Gorra Urban Flow",
       category: "Accesorios",
-      img: "",
+      img: "https://img.kwcdn.com/product/fancy/11c88fcd-4349-4fd2-951e-8593d41ea41e.jpg?imageMogr2/auto-orient%7CimageView2/2/w/800/q/70/format/webp",
       price: 49900,
       color: "Negro",
       tipo: "Accesorios",
