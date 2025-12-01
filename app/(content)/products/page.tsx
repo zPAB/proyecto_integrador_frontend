@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 
-=======
->>>>>>> 7670bdc (reorganizando productos y perfil y añadiendo una pagina de contacto)
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
@@ -10,9 +7,8 @@ import ProductCard from "@/features/products/ProductCard";
 import ProductModal from "@/features/products/ProductModal";
 
 export default function ProductsPage() {
-<<<<<<< HEAD
   const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
-=======
+
   const categories = ["Todo", "Hombre", "Mujer", "Unisex", "Accesorios"];
   const colors = ["Negro", "Blanco", "Rojo", "Azul", "Gris", "Café", "Beige"];
   const tipos = ["Camisetas", "Pantalones", "Chaquetas", "Tops", "Accesorios"];
@@ -21,9 +17,8 @@ export default function ProductsPage() {
   const [search, setSearch] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
   const [tipoRopa, setTipoRopa] = useState("");
-  const [minPrice, setMinPrice] = useState(0); // Cambié a tipo numérico
-  const [maxPrice, setMaxPrice] = useState(750000); // Cambié a tipo numérico
->>>>>>> 7670bdc (reorganizando productos y perfil y añadiendo una pagina de contacto)
+  const [minPrice, setMinPrice] = useState(0);
+  const [maxPrice, setMaxPrice] = useState(750000);
 
   const products = useProductStore((s) => s.products);
   const loading = useProductStore((s) => s.loading);
@@ -33,35 +28,15 @@ export default function ProductsPage() {
     if (products.length === 0) fetchProducts();
   }, [fetchProducts, products.length]);
 
-<<<<<<< HEAD
-  const filtered = useMemo(() => {
-    return products; // Aquí puedes mantener tu lógica de filtros si la necesitas
-  }, [products]);
-
-  return (
-    <main className="text-white w-full mt-1">
-      {/* Aquí mantienes tu buscador y filtros */}
-=======
-  // Filtro de productos basado en los valores seleccionados
   const filtered = useMemo(() => {
     return products.filter((p) => {
-      // Verifica la categoría seleccionada
       const matchCategory = active === "Todo" || p.category === active;
-
-      // Verifica la búsqueda de nombre del producto
       const matchSearch = p.name.toLowerCase().includes(search.toLowerCase());
-
-      // Verifica el color seleccionado
       const matchColor = selectedColor === "" || p.color === selectedColor;
-
-      // Verifica el tipo de ropa seleccionado
       const matchTipo = tipoRopa === "" || p.tipo === tipoRopa;
-
-      // Verifica los precios (asegurándose de que minPrice y maxPrice son números)
       const matchMin = minPrice === 0 || p.price >= minPrice;
       const matchMax = maxPrice === 750000 || p.price <= maxPrice;
 
-      // Retorna el producto solo si todos los filtros coinciden
       return matchCategory && matchSearch && matchColor && matchTipo && matchMin && matchMax;
     });
   }, [products, active, search, selectedColor, tipoRopa, minPrice, maxPrice]);
@@ -116,9 +91,8 @@ export default function ProductsPage() {
               placeholder="Ej: 10000"
               value={minPrice}
               onChange={(e) => setMinPrice(Number(e.target.value))}
-              className="border p-2 rounded w-full bg-zinc-900 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+              className="border p-2 rounded w-full bg-zinc-900"
             />
-            {/* Sugerencias de precio removidas: ahora solo input numérico */}
           </div>
 
           {/* PRECIO MÁXIMO */}
@@ -129,7 +103,7 @@ export default function ProductsPage() {
               placeholder="Ej: 750000"
               value={maxPrice}
               onChange={(e) => setMaxPrice(Number(e.target.value))}
-              className="border p-2 rounded w-full bg-zinc-900 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+              className="border p-2 rounded w-full bg-zinc-900"
             />
           </div>
 
@@ -170,7 +144,6 @@ export default function ProductsPage() {
       </div>
 
       {/* GRID DE PRODUCTOS */}
->>>>>>> 7670bdc (reorganizando productos y perfil y añadiendo una pagina de contacto)
       <section className="max-w-6xl mx-auto px-6 pb-16">
         {loading ? (
           <p className="text-center">Cargando...</p>
