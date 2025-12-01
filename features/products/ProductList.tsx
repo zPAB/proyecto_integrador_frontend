@@ -1,11 +1,14 @@
-// src/features/products/ProductList.tsx
+
 "use client";
 
 import ProductCard from "@/features/products/ProductCard";
 import { useProducts } from "@/hooks/useProducts";
+import { useState } from "react";
+import ProductModal from "@/features/products/ProductModal";
 
 export default function ProductList() {
   const { products, loading } = useProducts();
+  const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
 
   if (loading) return <p className="text-center py-12">Cargando productos...</p>;
 
@@ -14,10 +17,23 @@ export default function ProductList() {
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-      {products.map((p) => (
-        <ProductCard key={p.id} product={p} />
-      ))}
-    </div>
+    <>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+        {products.map((p) => (
+          <ProductCard
+            key={p.id}
+            product={p}
+            onView={() => setSelectedProductId(p.id)}
+          />
+        ))}
+      </div>
+
+      {selectedProductId && (
+        <ProductModal
+          productId={selectedProductId}
+          onClose={() => setSelectedProductId(null)}
+        />
+      )}
+    </>
   );
 }
