@@ -35,9 +35,14 @@ export default function Footer() {
               </Link>
             </li>
             <li>
-              <Link href="/contact" className="hover:text-red-500">
+              <Link href="/contacto" className="hover:text-red-500">
                 Contacto
               </Link>
+            </li>
+            <li>
+              <a href="mailto:contacto@example.com" className="hover:text-red-500">
+                contacto@example.com
+              </a>
             </li>
           </ul>
         </div>

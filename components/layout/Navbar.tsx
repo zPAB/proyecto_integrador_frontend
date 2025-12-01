@@ -27,9 +27,9 @@ export default function Navbar() {
   return (
     <nav className="bg-black text-white px-6 py-4 border-b border-gray-800 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
-        
-        {/* LOGO */}
-        <h1 className="text-2xl font-bold">
+
+        {/* LOGO - A LA IZQUIERDA */}
+        <h1 className="text-2xl font-bold flex items-center gap-1">
           <Link
             href="/"
             onClick={() => handleReload("/")}
@@ -40,19 +40,8 @@ export default function Navbar() {
           </Link>
         </h1>
 
-        {/* BOTÓN HAMBURGUESA */}
-        <button
-          className="md:hidden flex flex-col gap-1 focus:outline-none"
-          onClick={() => setOpen(!open)}
-          aria-label="Abrir menú"
-        >
-          <span className="w-6 h-[3px] bg-white transition"></span>
-          <span className="w-6 h-[3px] bg-white transition"></span>
-          <span className="w-6 h-[3px] bg-white transition"></span>
-        </button>
-
-        {/* LINKS DESKTOP */}
-        <div className="hidden md:flex gap-8 text-lg">
+        {/* LINKS - CENTRADOS */}
+        <div className="hidden md:flex gap-8 text-lg mx-auto">
           <Link
             href="/"
             onClick={() => handleReload("/")}
@@ -68,17 +57,16 @@ export default function Navbar() {
           >
             Productos
           </Link>
-
           <Link
-            href="/dashboard"
-            onClick={() => handleReload("/dashboard")}
+            href="/contacto"
+            onClick={() => handleReload("/contacto")}
             className="hover:text-red-500"
           >
-            Dashboard
+            Contacto
           </Link>
         </div>
 
-        {/* LOGIN / REGISTER / PERFIL DESKTOP */}
+        {/* PERFIL / LOGIN / REGISTER - A LA DERECHA */}
         <div className="hidden md:flex gap-6 text-lg items-center">
 
           {/* SI ESTÁ CARGANDO LA SESIÓN */}
@@ -117,13 +105,6 @@ export default function Navbar() {
                   className="w-10 h-10 rounded-full border border-gray-300 cursor-pointer hover:opacity-80 transition"
                 />
               </Link>
-
-              <button
-                onClick={() => signOut()}
-                className="text-red-500 hover:text-red-600"
-              >
-                Cerrar sesión
-              </button>
             </>
           )}
         </div>
@@ -145,11 +126,9 @@ export default function Navbar() {
           <Link href="/products" onClick={() => handleClick("/products")} className="hover:text-red-500">
             Productos
           </Link>
-
-          <Link href="/dashboard" onClick={() => handleClick("/dashboard")} className="hover:text-red-500">
-            Dashboard
+          <Link href="/contacto" onClick={() => handleClick("/contacto")} className="hover:text-red-500">
+            Contacto
           </Link>
-
           <hr className="border-gray-700" />
 
           {/* LOGIN/REGISTER MOBILE */}
@@ -164,6 +143,10 @@ export default function Navbar() {
             </>
           )}
 
+          <a href="mailto:contacto@example.com" className="hover:text-red-500">
+            Enviar email
+          </a>
+
           {/* PERFIL MOBILE */}
           {!loading && user && (
             <>
@@ -174,13 +157,6 @@ export default function Navbar() {
                   className="w-10 h-10 rounded-full border border-gray-300 cursor-pointer hover:opacity-80 transition"
                 />
               </Link>
-
-              <button
-                onClick={() => { signOut(); setOpen(false); }}
-                className="text-red-500 text-left"
-              >
-                Cerrar sesión
-              </button>
             </>
           )}
         </div>

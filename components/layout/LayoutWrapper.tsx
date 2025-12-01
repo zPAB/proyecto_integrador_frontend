@@ -8,7 +8,13 @@ import Footer from "./Footer";
 export default function LayoutWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
-  const hideFooter = pathname === "/login" || pathname === "/register";
+  const hideFooter =
+    pathname === "/login" ||
+    pathname === "/register" ||
+    pathname === "/profile" ||
+    pathname === "/contacto" ||
+    // ocultar footer en detalle de producto: /products/[id]
+    pathname.startsWith("/products/");
   const disableScroll = pathname === "/login" || pathname === "/register";
 
   useEffect(() => {
