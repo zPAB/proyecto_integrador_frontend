@@ -1,30 +1,26 @@
-'use client'
+// src/stores/useProductStore.ts
+import { create } from "zustand";
+import { Product } from "@/types/product";
+import { getProducts } from "@/services/productService";
 
-import { useEffect, useState } from "react";
-import { Product } from "../types/product";
-import { listProducts } from "../services/productService";
+type State = {
+  products: Product[];
+  loading: boolean;
+  error?: string | null;
+  fetchProducts: () => Promise<void>;
+};
 
-export function useProductStore() {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  async function load() {
-    setLoading(true);
-    setError(null);
+export const useProductStore = create<State>((set) => ({
+  products: [],
+  loading: false,
+  error: null,
+  fetchProducts: async () => {
+    set({ loading: true, error: null });
     try {
-      const data = await listProducts();
-      setProducts(data);
-    } catch (e) {
-      setError("Error cargando productos");
-    } finally {
-      setLoading(false);
+      const data = await getProducts();
+      set({ products: data, loading: false });
+    } catch (err: any) {
+      set({ error: err.message || "Error", loading: false });
     }
-  }
-
-  useEffect(() => {
-    load();
-  }, []);
-
-  return { products, loading, error, reload: load };
-}
+  },
+}));

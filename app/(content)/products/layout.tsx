@@ -1,3 +1,4 @@
+// src/app/(content)/products/layout.tsx
 export default function ProductsLayout({ children }: { children: React.ReactNode }) {
-  return <section className="container mx-auto p-6">{children}</section>;
+  return <section className="text-white min-h-screen">{children}</section>;
 }
