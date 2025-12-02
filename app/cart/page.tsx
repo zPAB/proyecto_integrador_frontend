@@ -111,7 +111,13 @@ export default function CartPage() {
                 >
                   <div className="flex gap-6">
                     <img
-                      src={`/images/${item.image}`}
+                      src={
+                        item.img?.startsWith("http")
+                          ? item.img
+                          : item.image?.startsWith("http")
+                          ? item.image
+                          : `/images/${item.image || item.img || ""}`
+                      }
                       alt={item.name}
                       className="w-24 h-24 object-cover rounded-lg"
                     />

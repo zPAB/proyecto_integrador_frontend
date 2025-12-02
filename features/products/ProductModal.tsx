@@ -52,7 +52,11 @@ export default function ProductModal({
         ) : product ? (
           <>
             <img
-              src={`/images/${product.img}`}
+              src={
+                product.img?.startsWith("http")
+                  ? product.img
+                  : `/images/${product.img}`
+              }
               alt={product.name}
               className="w-full h-64 object-cover rounded"
             />

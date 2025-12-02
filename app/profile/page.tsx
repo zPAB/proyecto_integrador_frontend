@@ -330,6 +330,8 @@ export default function ProfilePage() {
                         src={
                           product.img?.startsWith("http")
                             ? product.img
+                            : product.image?.startsWith("http")
+                            ? product.image
                             : `/images/${product.img || product.image}`
                         }
                         alt={product.name}

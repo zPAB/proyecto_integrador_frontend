@@ -45,7 +45,11 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
         {/* Imagen */}
         <div className="relative">
           <img
-            src={product?.img}
+            src={
+              product?.img?.startsWith("http")
+                ? product.img
+                : `/images/${product?.img}`
+            }
             alt={product?.name}
             className="w-full h-96 object-cover rounded-lg shadow-lg"
           />
