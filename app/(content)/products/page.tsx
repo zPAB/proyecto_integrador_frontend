@@ -11,9 +11,9 @@ export default function ProductsPage() {
   const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
   const searchParams = useSearchParams();
 
-  const categories = ["Todo", "Hombre", "Mujer", "Unisex", "Accesorios"];
-  const colors = ["Negro", "Blanco", "Rojo", "Azul", "Gris", "Café", "Beige"];
-  const tipos = ["Camisetas", "Pantalones", "Chaquetas", "Tops", "Accesorios"];
+  const categories = ["Todo", "Hombre", "Mujer", "Unisex"];
+  const colors = ["Negro", "Blanco", "Rojo", "Azul", "Gris", "Beige"];
+  const tipos = ["Camisetas", "Pantalones", "Chaquetas"];
 
   // Obtener categoría del query parameter
   const initialCategory = searchParams.get("cat") 
@@ -84,7 +84,7 @@ export default function ProductsPage() {
         />
 
         {/* CATEGORÍAS */}
-        <div className="flex flex-wrap gap-3 mb-10">
+        <div className="flex gap-3 mb-10 justify-center">
           {categories.map((cat) => (
             <button
               key={cat}

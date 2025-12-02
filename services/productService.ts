@@ -5,7 +5,7 @@ const API_URL = "https://692b3daf7615a15ff24f1bd4.mockapi.io/products";
 
 export async function getProducts(): Promise<Product[]> {
   try {
-    const res = await fetch(API_URL, { cache: "no-store" });
+    const res = await fetch(`${API_URL}?limit=20`, { cache: "no-store" });
     if (!res.ok) throw new Error("Error fetching products");
     const data = await res.json();
     return Array.isArray(data) ? data : [];

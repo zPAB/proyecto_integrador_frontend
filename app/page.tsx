@@ -128,7 +128,7 @@ export default function Home() {
           Categorías
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-3 gap-8">
           <Link href="/products?cat=hombre">
             <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden hover:scale-105 transition cursor-pointer">
               <img
@@ -165,17 +165,6 @@ export default function Home() {
             </div>
           </Link>
 
-          <Link href="/products?cat=accesorios">
-            <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden hover:scale-105 transition cursor-pointer">
-              <img
-                src="https://images.pexels.com/photos/704241/pexels-photo-704241.jpeg"
-                className="h-48 w-full object-cover"
-              />
-              <div className="p-4 text-center">
-                <h3 className="font-bold text-red-600 text-xl">Accesorios</h3>
-              </div>
-            </div>
-          </Link>
         </div>
       </section>
 
