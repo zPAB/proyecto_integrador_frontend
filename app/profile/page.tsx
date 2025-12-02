@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
-import { User, Package, Heart, MapPin, LogOut } from "lucide-react";
+import { User, Package, MapPin, LogOut } from "lucide-react";
 import { getOrdersByUser, getProductById } from "@/services/orderService";
 import { getProductById as fetchProductById } from "@/services/productService";
 import Link from "next/link";
@@ -25,8 +25,6 @@ export default function ProfilePage() {
   });
 
   const [orders, setOrders] = useState<any[]>([]);
-  const [favorites, setFavorites] = useState<any[]>([]);
-  const [loadingFavorites, setLoadingFavorites] = useState(false);
 
   // =========================================================
   // CARGAR DATOS DEL USUARIO
@@ -100,37 +98,6 @@ export default function ProfilePage() {
   // =========================================================
   // CARGAR FAVORITOS DEL USUARIO
   // =========================================================
-  useEffect(() => {
-    if (!user) return;
-
-    const fetchFavorites = async () => {
-      setLoadingFavorites(true);
-      try {
-        const res = await fetch(`https://6929b1f99d311cddf34ae56d.mockapi.io/usuarios/${user.uid}`);
-        if (!res.ok) throw new Error("Usuario no encontrado");
-
-        const userData = await res.json();
-        const favoriteIds = userData.favorites || [];
-
-        // Cargar detalles de productos favoritos
-        const favoriteProducts = await Promise.all(
-          favoriteIds.map(async (id: string) => {
-            const product = await fetchProductById(id);
-            return product;
-          })
-        );
-
-        setFavorites(favoriteProducts.filter((p) => p !== null));
-      } catch (error) {
-        console.error("Error loading favorites:", error);
-      } finally {
-        setLoadingFavorites(false);
-      }
-    };
-
-    fetchFavorites();
-  }, [user]);
-
   const handleLogout = async () => {
     if (!window.confirm("¿Deseas cerrar sesión?")) return;
     await signOutUser();
@@ -193,7 +160,6 @@ export default function ProfilePage() {
           {[
             { tab: "info", label: "Mi Información", icon: User },
             { tab: "orders", label: "Mis Pedidos", icon: Package },
-            { tab: "favorites", label: "Favoritos", icon: Heart },
           ].map(({ tab, label, icon: Icon }) => (
             <button
               key={tab}
@@ -288,100 +254,6 @@ export default function ProfilePage() {
                       ))}
                     </ul>
                     <p className="text-right mt-4 text-xl font-bold">Total: ${order.total.toLocaleString()}</p>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* TAB FAVORITOS */}
-        {activeTab === "favorites" && (
-          <div>
-            <h3 className="text-2xl font-bold text-red-600 mb-6 flex items-center gap-2">
-              <Heart size={24} fill="currentColor" /> Mis Favoritos
-            </h3>
-
-            {loadingFavorites ? (
-              <div className="text-center py-10">
-                <p className="text-gray-400">Cargando favoritos...</p>
-              </div>
-            ) : favorites.length === 0 ? (
-              <div className="text-center py-10 bg-zinc-900 border border-zinc-800 rounded-xl">
-                <Heart size={64} className="mx-auto text-gray-600 mb-4" />
-                <p className="text-gray-400 text-lg">No tienes productos favoritos aún</p>
-                <Link
-                  href="/products"
-                  className="inline-block mt-4 bg-red-600 hover:bg-red-700 px-6 py-2 rounded-lg font-semibold"
-                >
-                  Ir a productos
-                </Link>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {favorites.map((product) => (
-                  <div
-                    key={product.id}
-                    className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden hover:border-red-600 transition-colors group"
-                  >
-                    {/* Imagen */}
-                    <div className="relative h-48 overflow-hidden bg-black">
-                      <img
-                        src={
-                          product.img?.startsWith("http")
-                            ? product.img
-                            : product.image?.startsWith("http")
-                            ? product.image
-                            : `/images/${product.img || product.image}`
-                        }
-                        alt={product.name}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-                      />
-                      <button
-                        className="absolute top-3 right-3 bg-red-600 hover:bg-red-700 rounded-full p-2 transition-all"
-                        onClick={async () => {
-                          const res = await fetch(
-                            `https://6929b1f99d311cddf34ae56d.mockapi.io/usuarios/${user?.uid}`
-                          );
-                          const userData = await res.json();
-                          const newFavorites = userData.favorites.filter(
-                            (id: string) => id !== product.id
-                          );
-                          await fetch(
-                            `https://6929b1f99d311cddf34ae56d.mockapi.io/usuarios/${user?.uid}`,
-                            {
-                              method: "PUT",
-                              headers: { "Content-Type": "application/json" },
-                              body: JSON.stringify({
-                                ...userData,
-                                favorites: newFavorites,
-                              }),
-                            }
-                          );
-                          setFavorites((prev) =>
-                            prev.filter((p) => p.id !== product.id)
-                          );
-                        }}
-                      >
-                        <Heart
-                          size={20}
-                          className="fill-white text-white"
-                        />
-                      </button>
-                    </div>
-
-                    {/* Info */}
-                    <div className="p-4">
-                      <h4 className="font-semibold mb-2 line-clamp-2">{product.name}</h4>
-                      <p className="text-red-600 font-bold mb-4">${product.price?.toLocaleString()}</p>
-
-                      <Link
-                        href={`/products/${product.id}`}
-                        className="block text-center bg-red-600 hover:bg-red-700 px-4 py-2 rounded font-semibold transition-colors"
-                      >
-                        Ver producto
-                      </Link>
-                    </div>
                   </div>
                 ))}
               </div>

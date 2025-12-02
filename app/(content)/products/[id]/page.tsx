@@ -51,7 +51,7 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
                 : `/images/${product?.img}`
             }
             alt={product?.name}
-            className="w-full h-96 object-cover rounded-lg shadow-lg"
+            className="w-full h-[500px] object-contain bg-white rounded-lg shadow-lg"
           />
           {product?.isOffer && (
             <div className="absolute top-4 left-4 bg-red-600 text-white px-4 py-2 rounded-full text-sm font-semibold">

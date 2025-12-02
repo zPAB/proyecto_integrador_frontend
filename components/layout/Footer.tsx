@@ -26,7 +26,7 @@ export default function Footer() {
             </li>
             <li>
               <Link href="/products" className="hover:text-red-500">
-                Productos
+                Catálogo
               </Link>
             </li>
             <li>

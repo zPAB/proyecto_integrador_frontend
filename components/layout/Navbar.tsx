@@ -57,7 +57,7 @@ export default function Navbar() {
             onClick={() => handleReload("/products")}
             className="hover:text-red-500"
           >
-            Productos
+            Catálogo
           </Link>
 
           <Link
@@ -139,7 +139,7 @@ export default function Navbar() {
             onClick={() => handleClick("/products")}
             className="hover:text-red-500"
           >
-            Productos
+            Catálogo
           </Link>
 
           <Link

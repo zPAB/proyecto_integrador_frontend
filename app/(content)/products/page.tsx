@@ -24,8 +24,9 @@ export default function ProductsPage() {
   const [search, setSearch] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
   const [tipoRopa, setTipoRopa] = useState("");
-  const [minPrice, setMinPrice] = useState(0);
-  const [maxPrice, setMaxPrice] = useState(750000);
+  // Use empty string for unset price filters so inputs start blank
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
 
   const products = useProductStore((s) => s.products);
   const loading = useProductStore((s) => s.loading);
@@ -41,12 +42,21 @@ export default function ProductsPage() {
       const matchSearch = p.name.toLowerCase().includes(search.toLowerCase());
       const matchColor = selectedColor === "" || p.color === selectedColor;
       const matchTipo = tipoRopa === "" || p.tipo === tipoRopa;
-      const matchMin = minPrice === 0 || p.price >= minPrice;
-      const matchMax = maxPrice === 750000 || p.price <= maxPrice;
+      const matchMin = minPrice === "" ? true : p.price >= Number(minPrice);
+      const matchMax = maxPrice === "" ? true : p.price <= Number(maxPrice);
 
       return matchCategory && matchSearch && matchColor && matchTipo && matchMin && matchMax;
     });
   }, [products, active, search, selectedColor, tipoRopa, minPrice, maxPrice]);
+
+  // Compute catalog-wide min/max prices for display above filters
+  const catalogPriceRange = useMemo(() => {
+    if (!products || products.length === 0) return { min: null as number | null, max: null as number | null };
+    const prices = products.map((p) => p.price);
+    return { min: Math.min(...prices), max: Math.max(...prices) };
+  }, [products]);
+
+  const formatMoney = (v: number | null) => (v === null ? "-" : `$${v.toLocaleString('es-ES')}`);
 
   return (
     <main className="text-white w-full mt-1">
@@ -88,30 +98,49 @@ export default function ProductsPage() {
           ))}
         </div>
 
+        {/* PRECIOS DEL CATÁLOGO */}
+        <div className="flex gap-6 mb-6">
+          <div className="text-sm text-gray-300">
+            Precio más barato: <span className="font-semibold text-white">{formatMoney(catalogPriceRange.min)}</span>
+          </div>
+          <div className="text-sm text-gray-300">
+            Precio más caro: <span className="font-semibold text-white">{formatMoney(catalogPriceRange.max)}</span>
+          </div>
+        </div>
+
         {/* FILTROS AVANZADOS */}
         <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-6 mb-8">
           {/* PRECIO MÍNIMO */}
           <div>
             <label className="block text-sm font-medium">Precio mínimo</label>
-            <input
-              type="number"
-              placeholder="Ej: 10000"
-              value={minPrice}
-              onChange={(e) => setMinPrice(Number(e.target.value))}
-              className="border p-2 rounded w-full bg-zinc-900"
-            />
+            <div className="relative">
+              <input
+                type="number"
+                aria-label="Precio mínimo"
+                placeholder="Ej: 10000"
+                value={minPrice}
+                onChange={(e) => setMinPrice(e.target.value)}
+                className="border p-2 rounded w-full bg-zinc-900 [&::-webkit-outer-spin-button]:hidden [&::-webkit-inner-spin-button]:hidden"
+              />
+ 
+            </div>
           </div>
 
           {/* PRECIO MÁXIMO */}
           <div>
             <label className="block text-sm font-medium">Precio máximo</label>
-            <input
-              type="number"
-              placeholder="Ej: 750000"
-              value={maxPrice}
-              onChange={(e) => setMaxPrice(Number(e.target.value))}
-              className="border p-2 rounded w-full bg-zinc-900"
-            />
+            <div className="relative">
+              <input
+                type="number"
+                aria-label="Precio máximo"
+                placeholder="Ej: 200000"
+                value={maxPrice}
+                onChange={(e) => setMaxPrice(e.target.value)}
+                max={200000}
+                className="border p-2 rounded w-full bg-zinc-900 [&::-webkit-outer-spin-button]:hidden [&::-webkit-inner-spin-button]:hidden"
+              />
+ 
+            </div>
           </div>
 
           {/* COLOR */}

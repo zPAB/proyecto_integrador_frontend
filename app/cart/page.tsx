@@ -36,7 +36,7 @@ export default function CartPage() {
               onClick={() => router.push("/products")}
               className="bg-red-600 hover:bg-red-700 px-8 py-3 rounded-lg font-bold transition-colors"
             >
-              Ir a productos
+              Ir al catálogo
             </button>
           </div>
         </div>
