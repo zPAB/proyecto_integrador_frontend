@@ -30,11 +30,6 @@ export default function Footer() {
               </Link>
             </li>
             <li>
-              <Link href="/about" className="hover:text-red-500">
-                Sobre Nosotros
-              </Link>
-            </li>
-            <li>
               <Link href="/contacto" className="hover:text-red-500">
                 Contacto
               </Link>
