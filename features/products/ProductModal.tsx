@@ -2,6 +2,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useCart } from "@/contexts/CartContext"; // ✅ Importamos el contexto
 
 interface Product {
   id: string;
@@ -23,6 +24,8 @@ export default function ProductModal({
 }) {
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
+  const [quantity, setQuantity] = useState(1); // ✅ Cantidad seleccionada
+  const { addToCart } = useCart(); // ✅ Hook del carrito
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -63,8 +66,36 @@ export default function ProductModal({
               <p>Color: {product.color}</p>
               <p>Tipo: {product.tipo}</p>
             </div>
+
+            {/* ✅ Selector de cantidad */}
+            <div className="mt-4">
+              <label htmlFor="quantity" className="text-sm">Cantidad:</label>
+              <input
+                type="number"
+                id="quantity"
+                value={quantity}
+                onChange={(e) => setQuantity(Number(e.target.value))}
+                className="border p-2 bg-zinc-800 text-white rounded w-full mt-2"
+                min="1"
+              />
+            </div>
+
+            {/* ✅ Botón Agregar al carrito */}
             <div className="mt-6 flex gap-4">
-              <button className="bg-red-600 px-4 py-2 rounded hover:bg-red-700">
+              <button
+                onClick={() => {
+                  if (product) {
+                    addToCart({
+                      id: product.id,
+                      name: product.name,
+                      price: product.price,
+                      image: product.img, // Ajustamos para tu contexto
+                    });
+                    onClose(); // ✅ Cierra el modal después de agregar
+                  }
+                }}
+                className="bg-red-600 px-4 py-2 rounded hover:bg-red-700 w-full"
+              >
                 Agregar al carrito
               </button>
             </div>

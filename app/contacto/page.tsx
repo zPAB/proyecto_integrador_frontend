@@ -6,7 +6,7 @@ export default function ContactoPage() {
       <p className="mb-6 text-gray-300">
         ¿Tienes alguna pregunta o necesitas ayuda? Escríbenos al correo{' '}
         <a href="mailto:contacto@example.com" className="text-red-500 underline">
-          contacto@example.com
+          Medallowear@gmail.com
         </a>{' '}
         o completa el formulario abajo.
       </p>
