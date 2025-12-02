@@ -1,11 +1,13 @@
-
 "use client";
 
 import { useCart } from "@/contexts/CartContext";
 import { useRouter } from "next/navigation";
+import { createOrder } from "@/services/orderService";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function CartPage() {
   const { cart, removeFromCart, clearCart, total } = useCart();
+  const { user } = useAuth();
   const router = useRouter();
 
   if (cart.length === 0) {
@@ -21,6 +23,35 @@ export default function CartPage() {
       </div>
     );
   }
+
+  const handlePurchase = async () => {
+    if (!user) {
+      alert("Debes iniciar sesión para comprar");
+      router.push("/login");
+      return;
+    }
+
+    const order = {
+      userId: user.uid,
+      items: cart.map((item) => ({
+        productId: item.id,
+        quantity: item.quantity,
+      })),
+      total: total,
+      date: new Date().toISOString(),
+    };
+
+    const created = await createOrder(order);
+
+    if (!created) {
+      alert("Error al procesar la compra");
+      return;
+    }
+
+    alert("Compra realizada con éxito!");
+    clearCart();
+    router.push("/profile"); // Redirige a perfil para ver los pedidos
+  };
 
   return (
     <div className="max-w-4xl mx-auto px-6 py-10 text-white">
@@ -67,12 +98,9 @@ export default function CartPage() {
           >
             Vaciar carrito
           </button>
+
           <button
-            onClick={() => {
-              alert("Compra realizada con éxito!");
-              clearCart();
-              router.push("/profile"); // ✅ Redirige a perfil
-            }}
+            onClick={handlePurchase}
             className="bg-green-600 px-6 py-2 rounded hover:bg-green-700"
           >
             Realizar compra

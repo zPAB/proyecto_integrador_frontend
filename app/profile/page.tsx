@@ -3,13 +3,8 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
-import {
-  User,
-  Package,
-  Heart,
-  MapPin,
-  LogOut,
-} from "lucide-react";
+import { User, Package, Heart, MapPin, LogOut } from "lucide-react";
+import { getOrdersByUser, getProductById } from "@/services/orderService";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -24,47 +19,82 @@ export default function ProfilePage() {
     address: "",
     city: "",
     department: "",
-    avatar: "",
+    avatar: "/default-avatar.png",
   });
 
-  // Carga de la información del usuario
+  const [orders, setOrders] = useState<any[]>([]);
+
+  // =========================================================
+  // CARGAR DATOS DEL USUARIO
+  // =========================================================
   useEffect(() => {
     if (!user) return;
 
-    const fetchUserFromMockAPI = async () => {
+    const fetchUserData = async () => {
       try {
-        const res = await fetch(
-          `https://66f86ad2b5d85f31a34102d3.mockapi.io/usuarios/${user.uid}`
-        );
+        const res = await fetch(`https://6929b1f99d311cddf34ae56d.mockapi.io/usuarios/${user.uid}`);
+        if (!res.ok) throw new Error("Usuario no encontrado en MockAPI");
+        const data = await res.json();
 
-        let data: any = null;
-
-        if (res.ok) {
-          data = await res.json();
-        }
-
-        // Usar datos de MockAPI si existen y no son vacíos; si están vacíos, preferir los datos de Firebase (Google)
         setUserData({
-          name: (data && data.name) || user.displayName || "",
-          email: (data && data.email) || user.email || "",
-          phone: (data && data.phone) || "",
-          address: (data && data.address) || "",
-          city: (data && data.city) || "",
-          department: (data && data.department) || "",
-          avatar: (data && data.avatar) || user.photoURL || "/default-avatar.png",
+          name: data.name || user.displayName || "",
+          email: data.email || user.email || "",
+          phone: data.phone || "",
+          address: data.address || "",
+          city: data.city || "",
+          department: data.department || "",
+          avatar: data.avatar || user.photoURL || "/default-avatar.png",
         });
-      } catch (err) {
-        console.log("Error cargando MockAPI", err);
+      } catch {
+        // fallback a Firebase
+        setUserData({
+          name: user.displayName || "",
+          email: user.email || "",
+          phone: "",
+          address: "",
+          city: "",
+          department: "",
+          avatar: user.photoURL || "/default-avatar.png",
+        });
       }
     };
 
-    fetchUserFromMockAPI();
+    fetchUserData();
+  }, [user]);
+
+  // =========================================================
+  // CARGAR PEDIDOS DEL USUARIO
+  // =========================================================
+  useEffect(() => {
+    if (!user) return;
+
+    const fetchOrders = async () => {
+      const rawOrders = await getOrdersByUser(user.uid);
+
+      const ordersWithProducts = await Promise.all(
+        rawOrders.map(async (order) => {
+          const itemsDetailed = await Promise.all(
+            order.items.map(async (item: any) => {
+              const product = await getProductById(item.productId);
+              return {
+                ...item,
+                name: product?.name || "Producto eliminado",
+                price: product?.price || 0,
+              };
+            })
+          );
+          return { ...order, items: itemsDetailed };
+        })
+      );
+
+      setOrders(ordersWithProducts.reverse());
+    };
+
+    fetchOrders();
   }, [user]);
 
   const handleLogout = async () => {
-    const confirm = window.confirm("¿Estás seguro que deseas cerrar sesión?");
-    if (!confirm) return;
-
+    if (!window.confirm("¿Deseas cerrar sesión?")) return;
     await signOutUser();
     router.push("/login");
   };
@@ -73,18 +103,14 @@ export default function ProfilePage() {
     e.preventDefault();
 
     try {
-      await fetch(
-        `https://66f86ad2b5d85f31a34102d3.mockapi.io/usuarios/${user.uid}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(userData),
-        }
-      );
-
+      await fetch(`https://6929b1f99d311cddf34ae56d.mockapi.io/usuarios/${user.uid}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(userData),
+      });
       alert("Información actualizada correctamente");
-    } catch (err) {
-      alert("Hubo un error guardando la información");
+    } catch {
+      alert("Error actualizando información");
     }
   };
 
@@ -101,27 +127,19 @@ export default function ProfilePage() {
       <section className="relative h-[40vh] bg-gradient-to-br from-red-900 to-black flex items-center justify-center">
         <button
           onClick={handleLogout}
-          className="absolute top-6 right-6 flex items-center gap-2 bg-black/30 hover:bg-red-600 backdrop-blur-md border border-white/10 px-4 py-2 rounded-lg transition-all duration-300 group"
+          className="absolute top-6 right-6 flex items-center gap-2 bg-black/30 hover:bg-red-600 px-4 py-2 rounded-lg"
         >
-          <LogOut size={18} className="text-gray-300 group-hover:text-white" />
-          <span className="text-sm font-medium text-gray-300 group-hover:text-white hidden sm:block">
-            Cerrar Sesión
-          </span>
+          <LogOut size={18} className="text-gray-300" />
+          <span className="text-sm text-gray-300 hidden sm:block">Cerrar Sesión</span>
         </button>
 
         <div className="text-center">
-          <div className="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-red-600 shadow-xl shadow-red-900/20 overflow-hidden bg-zinc-800">
-            <img
-              src={userData.avatar}
-              className="w-full h-full object-cover"
-            />
+          <div className="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-red-600 shadow-xl overflow-hidden bg-zinc-800">
+            <img src={userData.avatar} alt="avatar" className="w-full h-full object-cover" />
           </div>
 
-          <h1 className="text-4xl font-bold mb-2">
-            {userData.name || user.displayName || "Usuario"}
-          </h1>
-          <p className="text-gray-300">{userData.email || user.email}</p>
-
+          <h1 className="text-4xl font-bold mb-2">{userData.name || "Usuario"}</h1>
+          <p className="text-gray-300">{userData.email}</p>
           {userData.city && userData.department && (
             <p className="text-gray-400 flex items-center justify-center gap-2 mt-2">
               <MapPin size={16} />
@@ -131,101 +149,111 @@ export default function ProfilePage() {
         </div>
       </section>
 
-      {/* CONTENIDO */}
+      {/* NAV */}
       <div className="max-w-6xl mx-auto px-6 py-10">
-        {/* 🔥 NAV BAR DEL PERFIL (CENTRADO) */}
-        <div className="flex flex-wrap gap-4 mb-8 border-b border-zinc-800 pb-4 justify-center text-center mx-auto">
-          {[{ tab: "info", label: "Mi Información", icon: User },
+        <div className="flex gap-4 mb-8 border-b border-zinc-800 pb-4 justify-center">
+          {[
+            { tab: "info", label: "Mi Información", icon: User },
             { tab: "orders", label: "Mis Pedidos", icon: Package },
-            { tab: "favorites", label: "Favoritos", icon: Heart }]
-            .map(({ tab, label, icon: Icon }) => (
-              <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                className={`px-6 py-3 rounded-lg font-semibold transition flex items-center gap-2 ${activeTab === tab ? "bg-red-600 text-white" : "bg-zinc-900 text-gray-400 hover:bg-zinc-800"}`}
-              >
-                <Icon size={20} />
-                {label}
-              </button>
-            ))}
+            { tab: "favorites", label: "Favoritos", icon: Heart },
+          ].map(({ tab, label, icon: Icon }) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`px-6 py-3 rounded-lg font-semibold flex items-center gap-2 ${
+                activeTab === tab ? "bg-red-600 text-white" : "bg-zinc-900 text-gray-400 hover:bg-zinc-800"
+              }`}
+            >
+              <Icon size={20} /> {label}
+            </button>
+          ))}
         </div>
 
-        {/* TAB: INFO */}
+        {/* TAB INFO */}
         {activeTab === "info" && (
           <div className="grid md:grid-cols-2 gap-6">
-            {/* Información personal */}
+            {/* Información Personal */}
             <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
               <h3 className="text-xl font-bold text-red-600 mb-4">Información Personal</h3>
-
               <form onSubmit={handleUpdateInfo} className="space-y-4">
-                {[
-                  { label: "Nombre completo", field: "name" },
-                  { label: "Email", field: "email", type: "email" },
-                  { label: "Teléfono", field: "phone" },
-                ].map(({ label, field, type }) => (
+                {["name", "email", "phone"].map((field) => (
                   <div key={field}>
-                    <label className="text-gray-400 text-sm">{label}</label>
+                    <label className="text-gray-400 text-sm">{field.charAt(0).toUpperCase() + field.slice(1)}</label>
                     <input
-                      type={type || "text"}
-                      value={userData[field]}
+                      type={field === "email" ? "email" : "text"}
+                      value={(userData as any)[field]}
                       onChange={(e) => setUserData({ ...userData, [field]: e.target.value })}
                       className="w-full mt-1 bg-black border border-zinc-700 rounded-lg px-4 py-2 text-white"
                     />
                   </div>
                 ))}
-
                 <button className="w-full bg-red-600 hover:bg-red-700 py-3 rounded-lg font-semibold">
-                  Actualizar información
+                  Actualizar Información
                 </button>
               </form>
             </div>
 
-            {/* Dirección */}
+            {/* Dirección de Envío */}
             <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
               <h3 className="text-xl font-bold text-red-600 mb-4 flex items-center gap-2">
-                <MapPin size={24} />
-                Dirección de Envío
+                <MapPin size={24} /> Dirección de Envío
               </h3>
-
-              <div className="space-y-4">
-                {[
-                  { label: "Dirección", field: "address" },
-                  { label: "Ciudad", field: "city" },
-                  { label: "Departamento", field: "department" },
-                ].map(({ label, field }) => (
+              <form onSubmit={handleUpdateInfo} className="space-y-4">
+                {["address", "city", "department"].map((field) => (
                   <div key={field}>
-                    <label className="text-gray-400 text-sm">{label}</label>
+                    <label className="text-gray-400 text-sm">{field.charAt(0).toUpperCase() + field.slice(1)}</label>
                     <input
-                      value={userData[field]}
+                      type="text"
+                      value={(userData as any)[field]}
                       onChange={(e) => setUserData({ ...userData, [field]: e.target.value })}
                       className="w-full mt-1 bg-black border border-zinc-700 rounded-lg px-4 py-2 text-white"
                     />
                   </div>
                 ))}
-
                 <button className="w-full bg-red-600 hover:bg-red-700 py-3 rounded-lg font-semibold">
-                  Guardar dirección
+                  Guardar Dirección
                 </button>
-              </div>
+              </form>
             </div>
           </div>
         )}
 
-        {/* TAB: PEDIDOS */}
+        {/* TAB PEDIDOS */}
         {activeTab === "orders" && (
-          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-12 text-center">
-            <Package size={64} className="mx-auto text-gray-600 mb-4" />
-            <p className="text-gray-400 text-lg">No tienes pedidos aún</p>
-            <p className="text-gray-500 mt-2">Tus compras aparecerán aquí</p>
-          </div>
-        )}
+          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
+            <h3 className="text-2xl font-bold text-red-600 mb-6 flex items-center gap-2">
+              <Package size={24} /> Mis Pedidos
+            </h3>
 
-        {/* TAB: FAVORITOS */}
-        {activeTab === "favorites" && (
-          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-12 text-center">
-            <Heart size={64} className="mx-auto text-gray-600 mb-4" />
-            <p className="text-gray-400 text-lg">No has guardado productos</p>
-            <p className="text-gray-500 mt-2">Agrega productos a tu lista de favoritos</p>
+            {orders.length === 0 ? (
+              <div className="text-center py-10">
+                <Package size={64} className="mx-auto text-gray-600 mb-4" />
+                <p className="text-gray-400 text-lg">No tienes pedidos aún</p>
+              </div>
+            ) : (
+              <div className="space-y-6">
+                {orders.map((order) => (
+                  <div key={order.id} className="bg-black border border-zinc-800 rounded-xl p-6">
+                    <p className="text-gray-400 text-sm">
+                      Pedido ID: <span className="text-white">{order.id}</span>
+                    </p>
+                    <p className="text-gray-400 text-sm mb-4">
+                      Fecha: <span className="text-white">{order.date}</span>
+                    </p>
+                    <h4 className="text-lg font-semibold mb-2">Productos:</h4>
+                    <ul className="space-y-2">
+                      {order.items.map((item) => (
+                        <li key={item.productId} className="flex justify-between border-b border-zinc-700 pb-2">
+                          <span>{item.name} x{item.quantity}</span>
+                          <span className="text-red-600 font-bold">${item.price.toLocaleString()}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    <p className="text-right mt-4 text-xl font-bold">Total: ${order.total.toLocaleString()}</p>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
       </div>
