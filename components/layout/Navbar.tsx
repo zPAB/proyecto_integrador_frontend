@@ -105,15 +105,17 @@ export default function Navbar() {
             </Link>
           )}
 
-          {/* Carrito */}
-          <Link href="/cart" className="relative hover:text-red-500">
-            🛒 Carrito
-            {totalItems > 0 && (
-              <span className="absolute -top-2 -right-3 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full">
-                {totalItems}
-              </span>
-            )}
-          </Link>
+          {/* Carrito - Solo si hay sesión iniciada */}
+          {!loading && user && (
+            <Link href="/cart" className="relative hover:text-red-500">
+              🛒 Carrito
+              {totalItems > 0 && (
+                <span className="absolute -top-2 -right-3 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full">
+                  {totalItems}
+                </span>
+              )}
+            </Link>
+          )}
         </div>
       </div>
 
@@ -170,13 +172,15 @@ export default function Navbar() {
             </>
           )}
 
-          <Link
-            href="/cart"
-            onClick={() => handleClick("/cart")}
-            className="hover:text-red-500"
-          >
-            🛒 Carrito {totalItems > 0 && `(${totalItems})`}
-          </Link>
+          {!loading && user && (
+            <Link
+              href="/cart"
+              onClick={() => handleClick("/cart")}
+              className="hover:text-red-500"
+            >
+              🛒 Carrito {totalItems > 0 && `(${totalItems})`}
+            </Link>
+          )}
 
           {!loading && user && (
             <Link href="/profile" onClick={() => setOpen(false)}>
