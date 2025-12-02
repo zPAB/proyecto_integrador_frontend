@@ -1,31 +1,31 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Home() {
   const [open, setOpen] = useState(false);
+  const [latestProducts, setLatestProducts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const products = [
-    {
-      id: 1,
-      name: "Camiseta",
-      category: "Colección urbana",
-      img: "https://dynamobrand.co/cdn/shop/files/CamisetaRegularWarriorBorn3_785x.jpg?v=1758130873",
-    },
-    {
-      id: 2,
-      name: "Chaqueta streetwear negra",
-      category: "Colección urbana",
-      img: "https://image.made-in-china.com/202f0j00gbhlRneBZSUL/Varsity-Jacket-Men-Casual-Black-Bomber-Jacket-Loose-Baseball-Coat.webp",
-    },
-    {
-      id: 3,
-      name: "Pantalón denim clásico",
-      category: "Colección urbana",
-      img: "https://thunderjeans.co/cdn/shop/products/101898-0-web.webp?v=1710348544",
-    },
-  ];
+  useEffect(() => {
+    const fetchLatestProducts = async () => {
+      try {
+        const res = await fetch(
+          "https://692b3daf7615a15ff24f1bd4.mockapi.io/products"
+        );
+        const data = await res.json();
+        // Obtener los últimos 3 productos
+        setLatestProducts(data.slice(-3).reverse());
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLatestProducts();
+  }, []);
 
   return (
     <main className="bg-black text-white">
@@ -57,9 +57,26 @@ export default function Home() {
         <h2 className="text-3xl text-red-600 font-bold mb-4">
           Bienvenido a nuestra marca
         </h2>
-        <p className="text-gray-300 text-lg">
+        <p className="text-gray-300 text-lg mb-6">
           Descubre prendas únicas inspiradas en la creatividad, cultura urbana
           y energía de Medellín. Diseños auténticos para un estilo moderno.
+        </p>
+        <p className="text-white mb-6">
+          En Medallo Wear, creemos que la moda es más que ropa. Es una forma de expresión, 
+          una declaración de identidad y un reflejo de la energía vibrante de nuestra ciudad. 
+          Cada prenda que diseñamos nace de la inspiración de las calles de Medellín, 
+          sus colores, sus ritmos y su indomable espíritu.
+        </p>
+        <p className="text-white mb-6">
+          Nos comprometemos a ofrecerte prendas de alta calidad con diseños que no encontrarás 
+          en ningún otro lugar. Nuestros materiales son seleccionados cuidadosamente, nuestros 
+          cortes son precisos y nuestros detalles cuidados. Queremos que cuando uses una prenda 
+          de Medallo Wear, te sientas cómodo, seguro y con el mejor estilo.
+        </p>
+        <p className="text-white">
+          Únete a nuestra comunidad de personas que creen en la autenticidad, la calidad y el 
+          estilo urbano. Porque en Medallo Wear, no solo vendemos ropa: vendemos experiencias, 
+          confianza y la oportunidad de expresar quién realmente eres.
         </p>
       </section>
 
@@ -68,44 +85,38 @@ export default function Home() {
         <h2 className="text-3xl font-bold text-red-600 mb-6 text-center">
           Últimos Lanzamientos
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {products.map((item) => (
-            <div
-              key={item.id}
-              className="bg-zinc-900 rounded-xl overflow-hidden border border-zinc-800 hover:scale-105 transform transition cursor-pointer"
-            >
-              <img
-                src={item.img}
-                alt={item.name}
-                className="h-64 w-full object-cover"
-              />
-              <div className="p-4">
-                <h3 className="font-semibold">{item.name}</h3>
-                <p className="text-gray-400">{item.category}</p>
-                <button className="mt-4 w-full bg-red-600 py-2 rounded hover:bg-red-700 transition cursor-pointer">
-                  Ver producto
-                </button>
+        {loading ? (
+          <p className="text-center text-gray-400">Cargando productos...</p>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {latestProducts.map((item) => (
+              <div
+                key={item.id}
+                className="bg-zinc-900 rounded-xl overflow-hidden border border-zinc-800 hover:scale-105 transform transition cursor-pointer"
+              >
+                <img
+                  src={
+                    item.img?.startsWith("http")
+                      ? item.img
+                      : `/images/${item.img}`
+                  }
+                  alt={item.name}
+                  className="h-64 w-full object-cover"
+                />
+                <div className="p-4">
+                  <h3 className="font-semibold">{item.name}</h3>
+                  <p className="text-gray-400">{item.category}</p>
+                  <p className="text-red-600 font-bold mt-2">${item.price.toLocaleString()}</p>
+                  <Link href={`/products/${item.id}`}>
+                    <button className="mt-4 w-full bg-red-600 py-2 rounded hover:bg-red-700 transition cursor-pointer">
+                      Ver producto
+                    </button>
+                  </Link>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* PROMOCIÓN DESTACADA */}
-      <section className="relative my-14">
-        <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center rounded-xl">
-          <h2 className="text-3xl font-bold text-red-600 mb-2">
-            Nueva Colección Primavera
-          </h2>
-          <p className="text-gray-300 mb-4">
-            Colores vibrantes y diseños urbanos
-          </p>
-          <Link href="/products">
-            <button className="px-6 py-2 bg-red-600 hover:bg-red-700 rounded-lg font-semibold transition cursor-pointer">
-              Descúbrela
-            </button>
-          </Link>
-        </div>
+            ))}
+          </div>
+        )}
       </section>
 
       {/* CATEGORÍAS */}
@@ -166,7 +177,8 @@ export default function Home() {
       </section>
 
       {/* TESTIMONIOS */}
-      <section className="bg-zinc-950 py-14 px-6">
+      {/* TESTIMONIOS */}
+      <section className="py-14 px-6">
         <h2 className="text-2xl font-bold text-center text-red-600 mb-8">
           Opiniones de clientes
         </h2>

@@ -2,18 +2,25 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { useProductStore } from "@/stores/useProductStore";
 import ProductCard from "@/features/products/ProductCard";
 import ProductModal from "@/features/products/ProductModal";
 
 export default function ProductsPage() {
   const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
+  const searchParams = useSearchParams();
 
   const categories = ["Todo", "Hombre", "Mujer", "Unisex", "Accesorios"];
   const colors = ["Negro", "Blanco", "Rojo", "Azul", "Gris", "Café", "Beige"];
   const tipos = ["Camisetas", "Pantalones", "Chaquetas", "Tops", "Accesorios"];
 
-  const [active, setActive] = useState("Todo");
+  // Obtener categoría del query parameter
+  const initialCategory = searchParams.get("cat") 
+    ? searchParams.get("cat").charAt(0).toUpperCase() + searchParams.get("cat").slice(1)
+    : "Todo";
+
+  const [active, setActive] = useState(initialCategory);
   const [search, setSearch] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
   const [tipoRopa, setTipoRopa] = useState("");
