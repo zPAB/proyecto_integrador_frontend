@@ -187,6 +187,7 @@ export default function Home() {
             <p className="italic">
               "Excelente calidad y estilo. Perfecto para el flow paisa."
             </p>
+            <br />
             <h4 className="mt-4 font-bold text-red-600">– Laura</h4>
           </div>
 
