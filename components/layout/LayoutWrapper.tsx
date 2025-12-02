@@ -13,6 +13,8 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
     pathname === "/register" ||
     pathname === "/profile" ||
     pathname === "/contacto" ||
+    pathname === "/cart" ||
+    pathname === "/checkout" ||
     // ocultar footer en detalle de producto: /products/[id]
     pathname.startsWith("/products/");
   const disableScroll = pathname === "/login" || pathname === "/register";
