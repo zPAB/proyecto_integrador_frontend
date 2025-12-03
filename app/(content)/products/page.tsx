@@ -78,6 +78,7 @@ export default function ProductsPage() {
         <input
           type="text"
           placeholder="Buscar producto..."
+          aria-label="Buscar producto"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="w-full p-3 mb-8 bg-zinc-900 border border-zinc-700 rounded-lg"
@@ -112,9 +113,10 @@ export default function ProductsPage() {
         <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-6 mb-8">
           {/* PRECIO MÍNIMO */}
           <div>
-            <label className="block text-sm font-medium">Precio mínimo</label>
+            <label htmlFor="min-price" className="block text-sm font-medium">Precio mínimo</label>
             <div className="relative">
               <input
+                id="min-price"
                 type="number"
                 aria-label="Precio mínimo"
                 placeholder="Ej: 10000"
@@ -128,9 +130,10 @@ export default function ProductsPage() {
 
           {/* PRECIO MÁXIMO */}
           <div>
-            <label className="block text-sm font-medium">Precio máximo</label>
+            <label htmlFor="max-price" className="block text-sm font-medium">Precio máximo</label>
             <div className="relative">
               <input
+                id="max-price"
                 type="number"
                 aria-label="Precio máximo"
                 placeholder="Ej: 200000"
@@ -145,8 +148,9 @@ export default function ProductsPage() {
 
           {/* COLOR */}
           <div>
-            <label className="block text-sm font-medium">Color</label>
+            <label htmlFor="color-select" className="block text-sm font-medium">Color</label>
             <select
+              id="color-select"
               className="border p-2 bg-zinc-900 rounded w-full cursor-pointer"
               value={selectedColor}
               onChange={(e) => setSelectedColor(e.target.value)}
@@ -162,8 +166,9 @@ export default function ProductsPage() {
 
           {/* TIPO */}
           <div>
-            <label className="block text-sm font-medium">Tipo de ropa</label>
+            <label htmlFor="type-select" className="block text-sm font-medium">Tipo de ropa</label>
             <select
+              id="type-select"
               className="border p-2 bg-zinc-900 rounded w-full cursor-pointer"
               value={tipoRopa}
               onChange={(e) => setTipoRopa(e.target.value)}

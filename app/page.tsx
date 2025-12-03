@@ -2,10 +2,10 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { Product } from "@/types/product";
 
 export default function Home() {
-  const [open, setOpen] = useState(false);
-  const [latestProducts, setLatestProducts] = useState<any[]>([]);
+  const [latestProducts, setLatestProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -111,7 +111,7 @@ export default function Home() {
                   <p className="text-red-600 font-bold mb-4">${item.price.toLocaleString()}</p>
 
                   <Link href="/products">
-                    <button className="w-full text-center bg-red-600 hover:bg-red-700 px-4 py-2 rounded font-semibold transition-colors">
+                    <button className="w-full text-center bg-red-600 hover:bg-red-700 px-4 py-2 rounded font-semibold transition-colors cursor-pointer">
                       Ver producto
                     </button>
                   </Link>
@@ -133,6 +133,7 @@ export default function Home() {
             <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden hover:scale-105 transition cursor-pointer">
               <img
                 src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab"
+                alt="Hombre"
                 className="h-48 w-full object-cover"
               />
               <div className="p-4 text-center">
@@ -145,6 +146,7 @@ export default function Home() {
             <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden hover:scale-105 transition cursor-pointer">
               <img
                 src="https://images.pexels.com/photos/34447154/pexels-photo-34447154.jpeg"
+                alt="Mujer"
                 className="h-48 w-full object-cover"
               />
               <div className="p-4 text-center">
@@ -157,6 +159,7 @@ export default function Home() {
             <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden hover:scale-105 transition cursor-pointer">
               <img
                 src="https://images.pexels.com/photos/6786902/pexels-photo-6786902.jpeg"
+                alt="Unisex"
                 className="h-48 w-full object-cover"
               />
               <div className="p-4 text-center">

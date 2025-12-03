@@ -4,8 +4,14 @@ export interface Product {
   name: string;
   description?: string;
   category: string;
-  img: string;      // nombre del campo que usaremos para la URL de imagen en MockAPI
+  img?: string; // URL o nombre de archivo de la imagen en MockAPI
+  image?: string; // algunos endpoints pueden devolver 'image'
   price: number;
   color?: string;
   tipo?: string;
+  stock?: number;
+  features?: string[];
+  isOffer?: boolean;
+  // campos extra que pueden venir en el mock
+  [key: string]: unknown;
 }

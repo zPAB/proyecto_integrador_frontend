@@ -74,7 +74,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 rounded-xl bg-red-600 text-white font-semibold text-lg hover:bg-red-700 transition"
+            className="w-full py-3 rounded-xl bg-red-600 text-white font-semibold text-lg hover:bg-red-700 transition cursor-pointer disabled:opacity-50"
           >
             {loading ? "Cargando..." : "Entrar"}
           </button>
@@ -83,10 +83,11 @@ export default function LoginPage() {
             type="button"
             onClick={handleGoogle}
             disabled={loading}
-            className="w-full flex items-center justify-center gap-3 py-3 rounded-xl border border-neutral-300 bg-white hover:bg-gray-100 transition"
+            className="w-full flex items-center justify-center gap-3 py-3 rounded-xl border border-neutral-300 bg-white hover:bg-gray-100 transition cursor-pointer disabled:opacity-50"
           >
             <img
               src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+              alt="Google"
               className="w-5 h-5"
             />
             Continuar con Google
@@ -95,7 +96,7 @@ export default function LoginPage() {
 
         <p className="text-center text-gray-700 mt-6 text-sm">
           ¿No tienes cuenta?{" "}
-          <Link href="/register" className="text-red-600 hover:underline">
+          <Link href="/register" className="text-red-600 hover:underline cursor-pointer">
             Crear cuenta
           </Link>
         </p>

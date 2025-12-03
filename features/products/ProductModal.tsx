@@ -3,17 +3,7 @@
 
 import { useEffect, useState } from "react";
 import { useCart } from "@/contexts/CartContext"; // ✅ Importamos el contexto
-
-interface Product {
-  id: string;
-  name: string;
-  img: string;
-  price: number;
-  description: string;
-  category: string;
-  color: string;
-  tipo: string;
-}
+import { Product } from "@/types/product";
 
 export default function ProductModal({
   productId,
@@ -42,6 +32,7 @@ export default function ProductModal({
       <div className="bg-zinc-900 p-6 rounded-lg max-w-lg w-full text-white relative">
         <button
           onClick={onClose}
+          aria-label="Cerrar"
           className="absolute top-4 right-4 text-gray-400 hover:text-white"
         >
           ✕
@@ -89,16 +80,11 @@ export default function ProductModal({
               <button
                 onClick={() => {
                   if (product) {
-                    addToCart({
-                      id: product.id,
-                      name: product.name,
-                      price: product.price,
-                      image: product.img, // Ajustamos para tu contexto
-                    });
+                    addToCart(product, quantity);
                     onClose(); // ✅ Cierra el modal después de agregar
                   }
                 }}
-                className="bg-red-600 px-4 py-2 rounded hover:bg-red-700 w-full"
+                className="bg-red-600 px-4 py-2 rounded hover:bg-red-700 w-full cursor-pointer transition"
               >
                 Agregar al carrito
               </button>

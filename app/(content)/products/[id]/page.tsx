@@ -65,7 +65,7 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
           <h2 className="text-3xl font-bold">{product?.name}</h2>
           <p className="text-lg mt-4">{product?.category}</p>
           <p className="text-red-600 font-bold text-2xl mt-2">
-            ${product?.price.toLocaleString()}
+            ${product?.price ? product.price.toLocaleString() : "0"}
           </p>
 
           {/* Características */}
@@ -102,13 +102,13 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
           <div className="mt-8 flex gap-4">
             <button
               onClick={() => router.push("/products")}
-              className="bg-zinc-800 px-4 py-2 rounded hover:bg-zinc-700"
+              className="bg-zinc-800 px-4 py-2 rounded hover:bg-zinc-700 cursor-pointer transition"
             >
               Volver
             </button>
             <button
               onClick={() => product && addToCart({ ...product, quantity })} // ✅ Agrega con cantidad
-              className="bg-red-600 px-4 py-2 rounded hover:bg-red-700"
+              className="bg-red-600 px-4 py-2 rounded hover:bg-red-700 cursor-pointer transition"
             >
               Agregar al carrito
             </button>
@@ -117,7 +117,7 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
           {/* Comprar directo */}
           <button
             onClick={handleBuyClick}
-            className="mt-6 w-full bg-red-600 py-3 rounded-lg hover:bg-red-700 transition font-semibold"
+            className="mt-6 w-full bg-red-600 py-3 rounded-lg hover:bg-red-700 transition font-semibold cursor-pointer"
           >
             Comprar
           </button>

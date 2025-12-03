@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import { User, Package, MapPin, LogOut } from "lucide-react";
-import { getOrdersByUser, getProductById } from "@/services/orderService";
+import { getOrdersByUser, getProductById, Order } from "@/services/orderService";
 import { getProductById as fetchProductById } from "@/services/productService";
 import Link from "next/link";
 
@@ -24,7 +24,7 @@ export default function ProfilePage() {
     avatar: "/default-avatar.png",
   });
 
-  const [orders, setOrders] = useState<any[]>([]);
+  const [orders, setOrders] = useState<Order[]>([]);
 
   // =========================================================
   // CARGAR DATOS DEL USUARIO
@@ -74,9 +74,9 @@ export default function ProfilePage() {
       const rawOrders = await getOrdersByUser(user.uid);
 
       const ordersWithProducts = await Promise.all(
-        rawOrders.map(async (order) => {
+        rawOrders.map(async (order: Order) => {
           const itemsDetailed = await Promise.all(
-            order.items.map(async (item: any) => {
+            order.items.map(async (item) => {
               const product = await getProductById(item.productId);
               return {
                 ...item,
@@ -132,7 +132,7 @@ export default function ProfilePage() {
       <section className="relative h-[40vh] bg-gradient-to-br from-red-900 to-black flex items-center justify-center">
         <button
           onClick={handleLogout}
-          className="absolute top-6 right-6 flex items-center gap-2 bg-black/30 hover:bg-red-600 px-4 py-2 rounded-lg"
+          className="absolute top-6 right-6 flex items-center gap-2 bg-black/30 hover:bg-red-600 px-4 py-2 rounded-lg cursor-pointer transition"
         >
           <LogOut size={18} className="text-gray-300" />
           <span className="text-sm text-gray-300 hidden sm:block">Cerrar Sesión</span>
@@ -164,7 +164,7 @@ export default function ProfilePage() {
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`px-6 py-3 rounded-lg font-semibold flex items-center gap-2 ${
+              className={`px-6 py-3 rounded-lg font-semibold flex items-center gap-2 cursor-pointer transition ${
                 activeTab === tab ? "bg-red-600 text-white" : "bg-zinc-900 text-gray-400 hover:bg-zinc-800"
               }`}
             >
@@ -180,18 +180,37 @@ export default function ProfilePage() {
             <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
               <h3 className="text-xl font-bold text-red-600 mb-4">Información Personal</h3>
               <form onSubmit={handleUpdateInfo} className="space-y-4">
-                {["name", "email", "phone"].map((field) => (
-                  <div key={field}>
-                    <label className="text-gray-400 text-sm">{field.charAt(0).toUpperCase() + field.slice(1)}</label>
-                    <input
-                      type={field === "email" ? "email" : "text"}
-                      value={(userData as any)[field]}
-                      onChange={(e) => setUserData({ ...userData, [field]: e.target.value })}
-                      className="w-full mt-1 bg-black border border-zinc-700 rounded-lg px-4 py-2 text-white"
-                    />
-                  </div>
-                ))}
-                <button className="w-full bg-red-600 hover:bg-red-700 py-3 rounded-lg font-semibold">
+                <div>
+                  <label htmlFor="name" className="text-gray-400 text-sm">Nombre</label>
+                  <input
+                    id="name"
+                    type="text"
+                    value={userData.name}
+                    onChange={(e) => setUserData({ ...userData, name: e.target.value })}
+                    className="w-full mt-1 bg-black border border-zinc-700 rounded-lg px-4 py-2 text-white"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="email" className="text-gray-400 text-sm">Email</label>
+                  <input
+                    id="email"
+                    type="email"
+                    value={userData.email}
+                    onChange={(e) => setUserData({ ...userData, email: e.target.value })}
+                    className="w-full mt-1 bg-black border border-zinc-700 rounded-lg px-4 py-2 text-white"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="phone" className="text-gray-400 text-sm">Teléfono</label>
+                  <input
+                    id="phone"
+                    type="text"
+                    value={userData.phone}
+                    onChange={(e) => setUserData({ ...userData, phone: e.target.value })}
+                    className="w-full mt-1 bg-black border border-zinc-700 rounded-lg px-4 py-2 text-white"
+                  />
+                </div>
+                <button className="w-full bg-red-600 hover:bg-red-700 py-3 rounded-lg font-semibold cursor-pointer transition">
                   Actualizar Información
                 </button>
               </form>
@@ -203,18 +222,37 @@ export default function ProfilePage() {
                 <MapPin size={24} /> Dirección de Envío
               </h3>
               <form onSubmit={handleUpdateInfo} className="space-y-4">
-                {["address", "city", "department"].map((field) => (
-                  <div key={field}>
-                    <label className="text-gray-400 text-sm">{field.charAt(0).toUpperCase() + field.slice(1)}</label>
-                    <input
-                      type="text"
-                      value={(userData as any)[field]}
-                      onChange={(e) => setUserData({ ...userData, [field]: e.target.value })}
-                      className="w-full mt-1 bg-black border border-zinc-700 rounded-lg px-4 py-2 text-white"
-                    />
-                  </div>
-                ))}
-                <button className="w-full bg-red-600 hover:bg-red-700 py-3 rounded-lg font-semibold">
+                <div>
+                  <label htmlFor="address" className="text-gray-400 text-sm">Dirección</label>
+                  <input
+                    id="address"
+                    type="text"
+                    value={userData.address}
+                    onChange={(e) => setUserData({ ...userData, address: e.target.value })}
+                    className="w-full mt-1 bg-black border border-zinc-700 rounded-lg px-4 py-2 text-white"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="city" className="text-gray-400 text-sm">Ciudad</label>
+                  <input
+                    id="city"
+                    type="text"
+                    value={userData.city}
+                    onChange={(e) => setUserData({ ...userData, city: e.target.value })}
+                    className="w-full mt-1 bg-black border border-zinc-700 rounded-lg px-4 py-2 text-white"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="department" className="text-gray-400 text-sm">Departamento</label>
+                  <input
+                    id="department"
+                    type="text"
+                    value={userData.department}
+                    onChange={(e) => setUserData({ ...userData, department: e.target.value })}
+                    className="w-full mt-1 bg-black border border-zinc-700 rounded-lg px-4 py-2 text-white"
+                  />
+                </div>
+                <button className="w-full bg-red-600 hover:bg-red-700 py-3 rounded-lg font-semibold cursor-pointer transition">
                   Guardar Dirección
                 </button>
               </form>

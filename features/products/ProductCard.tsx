@@ -44,7 +44,7 @@ export default function ProductCard({
         {/* Botón Ver Producto */}
         <button
           onClick={onView}
-          className="w-full text-center bg-red-600 hover:bg-red-700 px-4 py-2 rounded font-semibold transition-colors"
+          className="w-full text-center bg-red-600 hover:bg-red-700 px-4 py-2 rounded font-semibold transition-colors cursor-pointer"
         >
           Ver producto
         </button>

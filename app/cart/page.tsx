@@ -129,7 +129,7 @@ export default function CartPage() {
                     </div>
                     <button
                       onClick={() => removeFromCart(item.id)}
-                      className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg font-semibold transition-colors h-fit"
+                      className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg font-semibold transition-colors h-fit cursor-pointer"
                     >
                       Eliminar
                     </button>
@@ -141,7 +141,7 @@ export default function CartPage() {
             <div className="p-6 border-t border-zinc-800">
               <button
                 onClick={clearCart}
-                className="w-full bg-zinc-800 hover:bg-zinc-700 px-6 py-3 rounded-lg font-semibold transition-colors"
+                className="w-full bg-zinc-800 hover:bg-zinc-700 px-6 py-3 rounded-lg font-semibold transition-colors cursor-pointer"
               >
                 Vaciar carrito
               </button>
@@ -181,7 +181,7 @@ export default function CartPage() {
             <div className="p-6">
               <button
                 onClick={() => setShowCheckoutForm(true)}
-                className="w-full bg-green-600 hover:bg-green-700 px-6 py-3 rounded-lg font-bold transition-colors text-lg"
+                className="w-full bg-green-600 hover:bg-green-700 px-6 py-3 rounded-lg font-bold transition-colors text-lg cursor-pointer"
               >
                 Realizar compra
               </button>
@@ -199,6 +199,7 @@ export default function CartPage() {
               <h2 className="text-2xl font-bold">Finalizar compra</h2>
               <button
                 onClick={() => setShowCheckoutForm(false)}
+                aria-label="Cerrar"
                 className="text-gray-400 hover:text-white"
               >
                 <X size={24} />
@@ -215,8 +216,9 @@ export default function CartPage() {
             <form onSubmit={handlePurchase} className="space-y-4">
               {/* Nombre */}
               <div>
-                <label className="text-gray-400 text-sm">Nombre Completo</label>
+                <label htmlFor="nombre" className="text-gray-400 text-sm">Nombre Completo</label>
                 <input
+                  id="nombre"
                   type="text"
                   value={formData.nombre}
                   onChange={(e) => setFormData({ ...formData, nombre: e.target.value })}
@@ -227,8 +229,9 @@ export default function CartPage() {
 
               {/* Email */}
               <div>
-                <label className="text-gray-400 text-sm">Correo Electrónico</label>
+                <label htmlFor="email" className="text-gray-400 text-sm">Correo Electrónico</label>
                 <input
+                  id="email"
                   type="email"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -239,8 +242,9 @@ export default function CartPage() {
 
               {/* Dirección */}
               <div>
-                <label className="text-gray-400 text-sm">Dirección de Envío</label>
+                <label htmlFor="direccion" className="text-gray-400 text-sm">Dirección de Envío</label>
                 <textarea
+                  id="direccion"
                   value={formData.direccion}
                   onChange={(e) => setFormData({ ...formData, direccion: e.target.value })}
                   className="w-full mt-1 bg-black border border-zinc-700 rounded px-4 py-2 text-white focus:outline-none focus:border-red-600 resize-none"
@@ -251,8 +255,9 @@ export default function CartPage() {
 
               {/* Método de Pago */}
               <div>
-                <label className="text-gray-400 text-sm">Método de Pago</label>
+                <label htmlFor="metodoPago" className="text-gray-400 text-sm">Método de Pago</label>
                 <select
+                  id="metodoPago"
                   value={formData.metodoPago}
                   onChange={(e) => setFormData({ ...formData, metodoPago: e.target.value })}
                   className="w-full mt-1 bg-black border border-zinc-700 rounded px-4 py-2 text-white focus:outline-none focus:border-red-600"
@@ -269,14 +274,14 @@ export default function CartPage() {
                 <button
                   type="button"
                   onClick={() => setShowCheckoutForm(false)}
-                  className="flex-1 bg-zinc-800 hover:bg-zinc-700 px-4 py-2 rounded font-semibold"
+                  className="flex-1 bg-zinc-800 hover:bg-zinc-700 px-4 py-2 rounded font-semibold cursor-pointer transition"
                 >
                   Cancelar
                 </button>
                 <button
                   type="submit"
                   disabled={loading}
-                  className="flex-1 bg-green-600 hover:bg-green-700 disabled:bg-gray-600 px-4 py-2 rounded font-semibold"
+                  className="flex-1 bg-green-600 hover:bg-green-700 disabled:bg-gray-600 px-4 py-2 rounded font-semibold cursor-pointer transition disabled:opacity-50"
                 >
                   {loading ? "Procesando..." : "Confirmar Compra"}
                 </button>
