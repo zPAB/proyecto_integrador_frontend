@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { Product } from "@/types/product";
+import "./hero.css";
 
 export default function Home() {
   const [latestProducts, setLatestProducts] = useState<Product[]>([]);
@@ -30,13 +31,7 @@ export default function Home() {
   return (
     <main className="bg-black text-white">
       {/* HERO PRINCIPAL */}
-      <section
-        className="relative h-[75vh] flex items-center justify-center bg-cover bg-center"
-        style={{
-          backgroundImage:
-            "url('https://images.unsplash.com/photo-1512436991641-6745cdb1723f')",
-        }}
-      >
+      <section className="hero-home relative h-[75vh] flex items-center justify-center">
         <div className="bg-black/60 p-10 rounded-2xl text-center max-w-xl">
           <h1 className="text-5xl font-bold text-red-600 mb-4">
             Moda Urbana de Medellín
@@ -62,21 +57,13 @@ export default function Home() {
           y energía de Medellín. Diseños auténticos para un estilo moderno.
         </p>
         <p className="text-white mb-6">
-          En Medallo Wear, creemos que la moda es más que ropa. Es una forma de expresión, 
-          una declaración de identidad y un reflejo de la energía vibrante de nuestra ciudad. 
-          Cada prenda que diseñamos nace de la inspiración de las calles de Medellín, 
-          sus colores, sus ritmos y su indomable espíritu.
+          En Medallo Wear, creemos que la moda es más que ropa. Es una forma de expresión, una declaración de identidad y un reflejo de la energía vibrante de nuestra ciudad.
         </p>
         <p className="text-white mb-6">
-          Nos comprometemos a ofrecerte prendas de alta calidad con diseños que no encontrarás 
-          en ningún otro lugar. Nuestros materiales son seleccionados cuidadosamente, nuestros 
-          cortes son precisos y nuestros detalles cuidados. Queremos que cuando uses una prenda 
-          de Medallo Wear, te sientas cómodo, seguro y con el mejor estilo.
+          Nos comprometemos a ofrecerte prendas de alta calidad con diseños únicos. Nuestros materiales son seleccionados cuidadosamente y nuestros detalles cuidados.
         </p>
         <p className="text-white">
-          Únete a nuestra comunidad de personas que creen en la autenticidad, la calidad y el 
-          estilo urbano. Porque en Medallo Wear, no solo vendemos ropa: vendemos experiencias, 
-          confianza y la oportunidad de expresar quién realmente eres.
+          Únete a nuestra comunidad. Porque en Medallo Wear no solo vendemos ropa: vendemos experiencias y confianza.
         </p>
       </section>
 
@@ -180,17 +167,17 @@ export default function Home() {
         <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-8">
           <div className="bg-black border border-zinc-800 p-6 rounded-xl">
             <p className="italic">
-              "Excelente calidad y estilo. Perfecto para el flow paisa."
+              Excelente calidad y estilo. Perfecto para el flow paisa.
             </p>
             <br />
-            <h4 className="mt-4 font-bold text-red-600">– Laura</h4>
+            <h4 className="mt-4 font-bold text-red-600">— Laura</h4>
           </div>
 
           <div className="bg-black border border-zinc-800 p-6 rounded-xl">
             <p className="italic">
-              "La ropa más cómoda y con mejor diseño urbano que he comprado."
+              La ropa más cómoda y con mejor diseño urbano que he comprado.
             </p>
-            <h4 className="mt-4 font-bold text-red-600">– Mateo</h4>
+            <h4 className="mt-4 font-bold text-red-600">— Mateo</h4>
           </div>
         </div>
       </section>

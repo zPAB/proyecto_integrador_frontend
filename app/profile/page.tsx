@@ -5,8 +5,6 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import { User, Package, MapPin, LogOut } from "lucide-react";
 import { getOrdersByUser, getProductById, Order } from "@/services/orderService";
-import { getProductById as fetchProductById } from "@/services/productService";
-import Link from "next/link";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -129,7 +127,7 @@ export default function ProfilePage() {
   return (
     <main className="bg-black text-white min-h-screen">
       {/* HEADER */}
-      <section className="relative h-[40vh] bg-gradient-to-br from-red-900 to-black flex items-center justify-center">
+      <section className="relative h-[40vh] bg-linear-to-br from-red-900 to-black flex items-center justify-center">
         <button
           onClick={handleLogout}
           className="absolute top-6 right-6 flex items-center gap-2 bg-black/30 hover:bg-red-600 px-4 py-2 rounded-lg cursor-pointer transition"
@@ -287,7 +285,7 @@ export default function ProfilePage() {
                       {order.items.map((item) => (
                         <li key={item.productId} className="flex justify-between border-b border-zinc-700 pb-2">
                           <span>{item.name} x{item.quantity}</span>
-                          <span className="text-red-600 font-bold">${item.price.toLocaleString()}</span>
+                          <span className="text-red-600 font-bold">${(item.price || 0).toLocaleString()}</span>
                         </li>
                       ))}
                     </ul>

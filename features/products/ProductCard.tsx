@@ -1,12 +1,6 @@
 "use client";
 
-interface Product {
-  id: string;
-  name: string;
-  img?: string;
-  image?: string;
-  price: number;
-}
+import { Product } from "@/types/product";
 
 export default function ProductCard({
   product,
@@ -14,8 +8,7 @@ export default function ProductCard({
 }: {
   product: Product;
   onView?: () => void;
-}) {;
-
+}) {
   // Resolver imagen (URL completa o nombre de archivo)
   const resolveImageSrc = () => {
     const imgName = product.img || product.image || "";

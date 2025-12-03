@@ -48,8 +48,9 @@ export default function LoginPage() {
 
         <form className="space-y-6" onSubmit={handleLogin}>
           <div>
-            <label className="text-gray-700 font-medium text-sm">Correo electrónico</label>
+            <label htmlFor="email" className="text-gray-700 font-medium text-sm">Correo electrónico</label>
             <input
+              id="email"
               type="email"
               required
               value={email}
@@ -60,8 +61,9 @@ export default function LoginPage() {
           </div>
 
           <div>
-            <label className="text-gray-700 font-medium text-sm">Contraseña</label>
+            <label htmlFor="password" className="text-gray-700 font-medium text-sm">Contraseña</label>
             <input
+              id="password"
               type="password"
               required
               value={password}

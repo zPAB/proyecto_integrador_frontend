@@ -12,7 +12,6 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
   const [showForm, setShowForm] = useState(false);
-  const [formData, setFormData] = useState({ name: "", email: "", address: "" });
   const router = useRouter();
   const { addToCart } = useCart(); // ✅ Obtenemos la función para agregar al carrito
 

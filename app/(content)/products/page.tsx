@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { useProductStore } from "@/stores/useProductStore";
 import ProductCard from "@/features/products/ProductCard";
 import ProductModal from "@/features/products/ProductModal";
+import "../hero.css";
 
 export default function ProductsPage() {
   const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
@@ -16,8 +17,9 @@ export default function ProductsPage() {
   const tipos = ["Camisetas", "Pantalones", "Chaquetas"];
 
   // Obtener categoría del query parameter
-  const initialCategory = searchParams.get("cat") 
-    ? searchParams.get("cat").charAt(0).toUpperCase() + searchParams.get("cat").slice(1)
+  const catParam = searchParams.get("cat");
+  const initialCategory = catParam 
+    ? catParam.charAt(0).toUpperCase() + catParam.slice(1)
     : "Todo";
 
   const [active, setActive] = useState(initialCategory);
@@ -61,13 +63,7 @@ export default function ProductsPage() {
   return (
     <main className="text-white w-full mt-1">
       {/* HERO */}
-      <section
-        className="relative h-[45vh] bg-cover bg-center flex items-center justify-center"
-        style={{
-          backgroundImage:
-            "url('https://images.unsplash.com/photo-1512436991641-6745cdb1723f')",
-        }}
-      >
+      <section className="hero-products relative h-[45vh] flex items-center justify-center">
         <div className="absolute inset-0 bg-black/70"></div>
         <h1 className="relative text-5xl font-bold text-red-600">Colección Completa</h1>
       </section>
