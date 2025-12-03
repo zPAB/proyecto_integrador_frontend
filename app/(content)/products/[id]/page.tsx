@@ -5,15 +5,16 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getProductById } from "@/services/productService";
 import { Product } from "@/types/product";
-import { useCart } from "@/contexts/CartContext"; 
+import { useCart } from "@/contexts/CartContext";
+import { useAuth } from "@/contexts/AuthContext"; 
 
 export default function ProductDetail({ params }: { params: { id: string } }) {
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
-  const [showForm, setShowForm] = useState(false);
   const router = useRouter();
-  const { addToCart } = useCart(); // ✅ Obtenemos la función para agregar al carrito
+  const { addToCart } = useCart();
+  const { user } = useAuth();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -23,16 +24,6 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
     };
     fetchProduct();
   }, [params.id]);
-
-  const handleBuyClick = () => {
-    setShowForm(true);
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    alert("Compra realizada con éxito!");
-    router.push("/products");
-  };
 
   if (loading) {
     return <p className="text-center text-white">Cargando...</p>;
@@ -96,7 +87,6 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
               min="1"
             />
           </div>
-
           {/* Botones */}
           <div className="mt-8 flex gap-4">
             <button
@@ -106,8 +96,16 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
               Volver
             </button>
             <button
-              onClick={() => product && addToCart({ ...product, quantity })} // ✅ Agrega con cantidad
-              className="bg-red-600 px-4 py-2 rounded hover:bg-red-700 cursor-pointer transition"
+              onClick={() => {
+                if (!user) {
+                  router.push("/login");
+                  return;
+                }
+                if (product) {
+                  addToCart({ ...product, quantity });
+                }
+              }}
+              className="bg-red-600 px-4 py-2 rounded hover:bg-red-700 cursor-pointer transition font-semibold"
             >
               Agregar al carrito
             </button>
@@ -115,20 +113,19 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
 
           {/* Comprar directo */}
           <button
-            onClick={handleBuyClick}
-            className="mt-6 w-full bg-red-600 py-3 rounded-lg hover:bg-red-700 transition font-semibold cursor-pointer"
+            onClick={() => {
+              if (!user) {
+                router.push("/login");
+                return;
+              }
+              router.push("/cart");
+            }}
+            className="mt-6 w-full bg-green-600 py-3 rounded-lg hover:bg-green-700 transition font-semibold cursor-pointer"
           >
-            Comprar
+            Comprar ahora
           </button>
         </div>
       </div>
-
-      {/* Formulario de pago */}
-      {showForm && (
-        <form onSubmit={handleSubmit} className="mt-8 bg-zinc-900 p-6 rounded-lg shadow-lg">
-          {/* Campos del formulario */}
-        </form>
-      )}
     </div>
   );
 }

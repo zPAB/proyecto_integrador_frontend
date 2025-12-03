@@ -2,8 +2,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useCart } from "@/contexts/CartContext"; // ✅ Importamos el contexto
+import { useCart } from "@/contexts/CartContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { Product } from "@/types/product";
+import { useRouter } from "next/navigation";
+import { X } from "lucide-react";
 
 export default function ProductModal({
   productId,
@@ -14,8 +17,10 @@ export default function ProductModal({
 }) {
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
-  const [quantity, setQuantity] = useState(1); // ✅ Cantidad seleccionada
-  const { addToCart } = useCart(); // ✅ Hook del carrito
+  const [quantity, setQuantity] = useState(1);
+  const { addToCart } = useCart();
+  const { user } = useAuth();
+  const router = useRouter();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -33,9 +38,9 @@ export default function ProductModal({
         <button
           onClick={onClose}
           aria-label="Cerrar"
-          className="absolute top-4 right-4 text-gray-400 hover:text-white"
+          className="absolute top-4 right-4 text-gray-400 hover:text-white cursor-pointer"
         >
-          ✕
+          <X size={24} />
         </button>
 
         {loading ? (
@@ -79,12 +84,16 @@ export default function ProductModal({
             <div className="mt-6 flex gap-4">
               <button
                 onClick={() => {
+                  if (!user) {
+                    router.push("/login");
+                    return;
+                  }
                   if (product) {
                     addToCart(product, quantity);
-                    onClose(); // ✅ Cierra el modal después de agregar
+                    onClose();
                   }
                 }}
-                className="bg-red-600 px-4 py-2 rounded hover:bg-red-700 w-full cursor-pointer transition"
+                className="bg-red-600 px-4 py-2 rounded hover:bg-red-700 w-full cursor-pointer transition font-semibold"
               >
                 Agregar al carrito
               </button>
