@@ -6,7 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { useProductStore } from "@/stores/useProductStore";
 import ProductCard from "@/features/products/ProductCard";
 import ProductModal from "@/features/products/ProductModal";
-import "../hero.css";
+import "@/app/hero.css";
 
 export default function ProductsPage() {
   const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
