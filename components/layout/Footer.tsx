@@ -36,7 +36,7 @@ export default function Footer() {
             </li>
             <li>
               <a href="mailto:contacto@example.com" className="hover:text-red-500">
-                contacto@example.com
+                Medallowear@gmail.com
               </a>
             </li>
           </ul>
